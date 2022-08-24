@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>CandyStore</title>
+    <meta charset="UTF-8">
+    <meta name="author" content="Candyman">
+    <link rel="stylesheet" href="/css/mustard-ui.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<header>
+    <h1>Candystore Exercise</h1>
+    <h2>Top customers and their favourites</h2>
+    <p>Below this introduction, there is a list of customers of a candy store</p>
+    <p>Your goal is to extract the top customers, and their favourite snacks.</p>
+    <p>We might change the content of the <a href="#candystore-customers">list of candy below</a>, so your program will need to fetch the data from this page somehow.</p>
+    <blockquote>
+        <p>Unless otherwise specified, you're completely free to choose which tools to use</p>
+    </blockquote>
+
+    <div class="container-small">
+        <a class="button button-primary button-large" href="#expected-results">Expected Results</a>
+        <a class="button button-primary button-large" href="#candystore-customers">The Data</a>
+    </div>
+    <a class="scroll-down" href="#expected-results"></a>
+
+</header>
+<section id="instructions" class="section-primary">
+    <div class="container">
+        <div class="stepper">
+            <div class="step">
+                <p class="step-number">1</p>
+                <p class="step-title">Extract all customers in the list</p>
+
+            </div>
+            <div class="step">
+                <p class="step-number">2</p>
+                <p class="step-title">Find their favourite candy</p>
+            </div>
+            <div class="step">
+                <p class="step-number">3</p>
+                <p class="step-title">Find their total number of purchases</p>
+            </div>
+            <div class="step">
+                <p class="step-number">4</p>
+                <p class="step-title">Order the list by total purchases</p>
+            </div>
+
+            <div class="step">
+                <p class="step-number">5</p>
+                <p class="step-title">Export to JSON</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="expected-results"  class="section-secondary">
+    <div class="container">
+        <h3>Expected Results</h3>
+        <pre class="language-javascript">
+            <code class="language-javascript">
+[
+    {
+        name: "Jonas",
+        favouriteSnack: "Geisha",
+        totalSnacks: 1982,
+    },
+    {
+        name: "Annika",
+        favouriteSnack: "Geisha",
+        totalSnacks: 208,
+    },
+    {
+        name: "Jane",
+        favouriteSnack: "Nötchoklad",
+        totalSnacks: 22,
+    },
+    {
+        name: "Aadya",
+        favouriteSnack: "Center",
+        totalSnacks: 11,
+    },
+
+]
+            </code>
+        </pre>
+    </div>
+
+</section>
+
+
+<section id="candystore-customers"  class="section-tertiary">
+    <div class="container">
+        <h3>The Data</h3>
+
+
+
+        <table class="top.customers summary">
+            <thead>
+            <th>Name</th>
+            <th>Favourite<!-- TODO: Prevent this table from being rendered in the HTML so that people don't just steal it for the exercise, because if they did - it would be totally OK! --></th>
+            </thead>
+            <tbody>
+            <tr>
+                <td x-total-candy="11">Aadya</td>
+                <td>Center</td>
+            </tr>
+            <tr>
+                <td x-total-candy="208">Annika</td>
+                <td>Geisha</td>
+            </tr>
+
+            <tr>
+                <td x-total-candy="1982">Jonas</td>
+                <td>Geisha</td>
+            </tr>
+
+
+            <tr>
+                <td x-total-candy="22">Jane</td>
+                <td>Nötchoklad</td>
+            </tr>
+
+            </tbody>
+        </table>
+
+        <table id="top.customers" class="top.customers details">
+            <thead>
+            <th>Name</th>
+            <th>Candy</th>
+            <th>Eaten</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Annika</td>
+                <td>Geisha</td>
+                <td>100</td>
+            </tr>
+
+            <tr>
+                <td>Jonas</td>
+                <td>Geisha</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>Jonas</td>
+                <td>Kexchoklad</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>Aadya</td>
+                <td>Nötchoklad</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Jonas</td>
+                <td>Nötchoklad</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Jane</td>
+                <td>Nötchoklad</td>
+                <td>17</td>
+            </tr>
+            <tr>
+                <td>Annika</td>
+                <td>Geisha</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>Jonas</td>
+                <td>Geisha</td>
+                <td>700</td>
+            </tr>
+
+            <tr>
+                <td>Jane</td>
+                <td>Nötchoklad</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>Aadya</td>
+                <td>Center</td>
+                <td>7</td>
+            </tr>
+            <tr>
+                <td>Jonas</td>
+                <td>Geisha</td>
+                <td>900</td>
+            </tr>
+
+            <tr>
+                <td>Jane</td>
+                <td>Nötchoklad</td>
+                <td>1</td>
+            </tr>
+            <tr>
+                <td>Jonas</td>
+                <td>Kexchoklad</td>
+                <td>12</td>
+            </tr>
+            <tr>
+                <td>Jonas</td>
+                <td>Plopp</td>
+                <td>40</td>
+            </tr>
+            <tr>
+                <td>Jonas</td>
+                <td>Center</td>
+                <td>27</td>
+            </tr>
+            <tr>
+                <td>Aadya</td>
+                <td>Center</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Annika</td>
+                <td>Center</td>
+                <td>8</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+<footer>
+</footer>
+
+</body>
+</html>
