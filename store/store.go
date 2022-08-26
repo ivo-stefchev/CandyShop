@@ -9,6 +9,7 @@ import "strconv"
 import "strings"
 import "fmt"
 import "sort"
+import "errors"
 import "encoding/json"
 
 const delimiter = "::DELIMITER::"
@@ -24,8 +25,12 @@ func Do() {
 		log.Fatal(err)
 	}
 
-	tds := getCustomersTds(body)
-	marshaled := getTotalAndFavouriteAsJson(tds)
+	tds, err := getCustomersTds(body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	favourite := getTotalAndFavourite(tds)
+	marshaled, _ := json.MarshalIndent(favourite, "", "  ")
 
 	fmt.Printf("%v\n", string(marshaled))
 }
@@ -41,17 +46,17 @@ type TotalAndFavorite struct {
 	Total            int    `json:"totalSnacks"`
 }
 
-// extract <td>s from customers table
-func getCustomersTds(inputHtml []byte) []string {
-	reCustomersTable := regexp.MustCompile(`<table id="top.customers" class="top.customers details">.*<tbody>(.*)</tbody>\s*</table>`)
-	reTds := regexp.MustCompile(`<td>([\w\s\p{L}]+)</td>`)
+var reCustomersTable = regexp.MustCompile(`<table id="top.customers" class="top.customers details">.*<tbody>(.*)</tbody>\s*</table>`)
+var reTds = regexp.MustCompile(`<td>([\w\s\p{L}]+)</td>`)
 
+// extract <td>s from customers table
+func getCustomersTds(inputHtml []byte) ([]string, error) {
 	// remove all newlines as regexp does not work in multiline
 	noNewLines := bytes.ReplaceAll(inputHtml, []byte("\n"), []byte(""))
 
 	tableCustomers := reCustomersTable.FindSubmatch(noNewLines)
 	if len(tableCustomers) < 1 {
-		log.Fatal("Did not find top customers table")
+		return nil, errors.New("Did not find top customers table")
 	}
 
 	tds := reTds.FindAllSubmatch(tableCustomers[1], -1)
@@ -61,16 +66,16 @@ func getCustomersTds(inputHtml []byte) []string {
 		result = append(result, string(v[1]))
 	}
 
-	return result
+	return result, nil
 }
 
 // len(input) should be multiple of 3
-func getTotalAndFavouriteAsJson(input []string) []byte {
+func getTotalAndFavourite(input []string) []TotalAndFavorite {
 	if len(input) % 3 != 0 {
 		log.Fatal("Number of input should be multiple of 3.")
 	}
 
-	personWithSnackCosumed := make(map[string]int)
+	uniquePersonAndSnack := make(map[string]int)
 	for i := 0; i < len(input) / 3; i++ {
 		y := i * 3
 		numberStr := input[y + 2]
@@ -81,12 +86,12 @@ func getTotalAndFavouriteAsJson(input []string) []byte {
 		name := input[y]
 		candy := input[y + 1]
 		key := name + delimiter + candy
-		personWithSnackCosumed[key] += quantity
+		uniquePersonAndSnack[key] += quantity
 	}
 
 	personToTotalAndFavorite := make(map[string]TotalAndFavorite)
 
-	for key, quantity := range personWithSnackCosumed {
+	for key, quantity := range uniquePersonAndSnack {
 		split := strings.Split(key, delimiter)
 		name := split[0]
 		candy := split[1]
@@ -109,7 +114,5 @@ func getTotalAndFavouriteAsJson(input []string) []byte {
 		return totalAndFavorite[i].Total > totalAndFavorite[j].Total
 	})
 
-	marshaled, _ := json.MarshalIndent(totalAndFavorite, "", "  ")
-
-	return marshaled
+	return totalAndFavorite
 }
